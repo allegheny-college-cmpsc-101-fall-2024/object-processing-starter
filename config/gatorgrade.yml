@@ -1,0 +1,141 @@
+setup: |
+  cd objectprocessor && poetry install
+  echo "Done installing project dependencies!"
+---
+
+# perform checks on a file
+- objectprocessor/objectprocessor/main.py:
+    - description: Ensure that the main.py file exists in the objectprocessor/objectprocessor/ directory
+      check: ConfirmFileExists
+    - description: Complete all TODOs, remove the TODO markers, and rewrite comments for main.py
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: Create a sufficient number of docstring (i.e., multiple-line) comments in main.py
+      check: CountMultipleLineComments
+      options:
+        language: "Python"
+        count: 3
+        exact: false
+    - description: Create a sufficient number of single-line comments in main.py
+      check: CountSingleLineComments
+      options:
+        language: "Python"
+        count: 5
+        exact: false
+
+# perform checks on a file
+- objectprocessor/objectprocessor/person.py:
+    - description: Ensure that the person.py file exists in the objectprocessor/objectprocessor/ directory
+      check: ConfirmFileExists
+    - description: Complete all TODOs, remove the TODO markers, and rewrite comments for person.py
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: Create a sufficient number of docstring (i.e., multiple-line) comments in person.py
+      check: CountMultipleLineComments
+      options:
+        language: "Python"
+        count: 5
+        exact: false
+    - description: Create a sufficient number of single-line comments in person.py
+      check: CountSingleLineComments
+      options:
+        language: "Python"
+        count: 2
+        exact: false
+
+# perform checks on a file
+- objectprocessor/objectprocessor/process.py:
+    - description: Ensure that the person.py file exists in the objectprocessor/objectprocessor/ directory
+      check: ConfirmFileExists
+    - description: Complete all TODOs, remove the TODO markers, and rewrite comments for process.py
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: Implement a bespoke version of getattr
+      check: MatchFileFragment
+      options:
+        fragment: getattr(
+        count: 0
+        exact: true
+    - description: Use function is_matching_person inside of find_matching_people
+      check: MatchFileFragment
+      options:
+        fragment: is_matching_person(
+        count: 2
+        exact: false
+    - description: Create a sufficient number of docstring (i.e., multiple-line) comments in process.py
+      check: CountMultipleLineComments
+      options:
+        language: "Python"
+        count: 2
+        exact: false
+    - description: Create a sufficient number of single-line comments in process.py
+      check: CountSingleLineComments
+      options:
+        language: "Python"
+        count: 2
+        exact: false
+        
+# perform checks on a file
+- writing/reflection.md:
+    - description: Ensure that the reflection.md file exists in the writing/ directory
+      check: ConfirmFileExists
+    - description: Complete all TODOs, remove the TODO markers, and rewrite comments for the reflection
+      check: MatchFileFragment
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+    - description: Delete the 'Add Your Name Here' prompt in the reflection file
+      check: MatchFileFragment
+      options:
+        fragment: "Add Your Name Here"
+        count: 0
+        exact: true
+    - description: Write a minimum number of meaningful words in the reflection
+      check: CountFileWords
+      options:
+        count: 300
+        exact: false
+    - description: Confirm that the markdown file has the correct number of headers
+      check: CountMarkdownTags
+      options:
+        tag: heading
+        count: 5
+        exact: false
+    - description: Confirm that the markdown file has the correct number of fenced code blocks
+      check: CountMarkdownTags
+      options:
+        tag: code_block
+        count: 6
+        exact: false
+
+# run a command
+- description: Pass the linting and formatting checks run ruff
+  command: cd objectprocessor && poetry run task ruff
+
+# run a command
+- description: Pass the type checks run by mypy
+  command: cd objectprocessor && poetry run task mypy
+
+# run a command
+- description: Pass the linting checks run by pymarkdown
+  command: cd objectprocessor && poetry run task markdownlint
+
+# run a command
+- description: Pass all of the Pytest test cases
+  command: cd objectprocessor && poetry run task test
+
+# count number of commits in the GitHub repository
+- description: Have at least a specific minimum of commits in repository
+  check: CountCommits
+  options:
+    count: 10
